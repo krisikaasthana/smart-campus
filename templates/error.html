@@ -1,0 +1,2 @@
+{% extends "base.html" %}{% block title %}Database Connection | Smart Campus{% endblock %}
+{% block content %}<div class="error"><h1>Database connection needed</h1><p>{{message}}</p><p><strong>Error:</strong> <code>{{error}}</code></p><p>Update DB_HOST, DB_PORT, DB_NAME, DB_USER and DB_PASSWORD in your environment or edit the defaults in <code>app.py</code>.</p></div>{% endblock %}

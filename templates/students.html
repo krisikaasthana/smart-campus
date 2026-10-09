@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Students | Smart Campus{% endblock %}
+{% block content %}
+<div class="top"><div><h1>Students</h1><div class="subtitle">Manage student records stored in PostgreSQL</div></div></div>
+<section class="panel formpanel"><h2>Add Student</h2>
+<form method="post" action="/students/add" class="formgrid">
+<label>First Name<input name="first_name" required></label><label>Last Name<input name="last_name" required></label>
+<label>Email<input type="email" name="email" required></label><label>Phone<input name="phone"></label>
+<label>Department<input name="department"></label><label>Academic Year<input type="number" name="academic_year" min="1" max="5"></label>
+<label>Gender<select name="gender"><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option></select></label>
+<div><button class="btn btn-primary" type="submit">Add Student</button></div>
+</form></section>
+<section class="panel"><div class="toolbar"><h2>Student Records</h2></div>
+<table><thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Department</th><th>Year</th><th>Gender</th><th>Action</th></tr></thead><tbody>
+{% for r in rows %}<tr><td>{{r.student_id}}</td><td>{{r.first_name}} {{r.last_name}}</td><td>{{r.email}}</td><td>{{r.department or '—'}}</td><td>{{r.academic_year or '—'}}</td><td>{{r.gender or '—'}}</td><td><form method="post" action="/students/delete/{{r.student_id}}" onsubmit="return confirm('Delete this student?');"><button class="btn btn-danger btn-small">Delete</button></form></td></tr>{% endfor %}
+</tbody></table></section>
+{% endblock %}

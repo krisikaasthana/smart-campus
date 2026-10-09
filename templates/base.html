@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}Smart Campus{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="brand">SMART CAMPUS<span>Event & Certificate Management</span></div>
+  <nav class="nav">
+    <a href="/" class="{% if request.path=='/' %}active{% endif %}">▣ <span>Dashboard</span></a>
+    <a href="/students" class="{% if request.path.startswith('/students') %}active{% endif %}">👤 <span>Students</span></a>
+    <a href="/events" class="{% if request.path.startswith('/events') %}active{% endif %}">▣ <span>Events</span></a>
+    <a href="/registrations" class="{% if request.path.startswith('/registrations') %}active{% endif %}">📝 <span>Registrations</span></a>
+    <a href="/attendance" class="{% if request.path.startswith('/attendance') %}active{% endif %}">✓ <span>Attendance</span></a>
+    <a href="/feedback" class="{% if request.path.startswith('/feedback') %}active{% endif %}">★ <span>Feedback</span></a>
+    <a href="/certificates" class="{% if request.path.startswith('/certificates') %}active{% endif %}">🏆 <span>Certificates</span></a>
+  </nav>
+</aside>
+<main class="main">
+{% with messages=get_flashed_messages(with_categories=true) %}
+  {% for category,message in messages %}<div class="flash">{{ message }}</div>{% endfor %}
+{% endwith %}
+{% block content %}{% endblock %}
+</main>
+</div>
+{% block scripts %}{% endblock %}
+</body></html>

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Dashboard | Smart Campus{% endblock %}
+{% block content %}
+<div class="top"><div><h1>Dashboard</h1><div class="subtitle">Smart Campus Event & Digital Certificate Management System</div></div><div class="user">Admin</div></div>
+<div class="cards">
+  <div class="card"><div class="label">TOTAL STUDENTS</div><div class="value">{{ stats.students }}</div><div class="accent">Live from PostgreSQL</div></div>
+  <div class="card"><div class="label">TOTAL EVENTS</div><div class="value">{{ stats.events }}</div><div class="accent">Live from PostgreSQL</div></div>
+  <div class="card"><div class="label">REGISTRATIONS</div><div class="value">{{ stats.registrations }}</div><div class="accent">Live from PostgreSQL</div></div>
+  <div class="card"><div class="label">CERTIFICATES</div><div class="value">{{ stats.certificates }}</div><div class="accent">Live from PostgreSQL</div></div>
+</div>
+<div class="grid2">
+  <section class="panel"><h2>Event-wise Registrations</h2><div class="chartbox"><canvas id="regChart"></canvas></div></section>
+  <section class="panel"><h2>Attendance Overview</h2><div class="chartbox"><canvas id="attendanceChart"></canvas></div></section>
+</div>
+<div class="grid2">
+  <section class="panel"><h2>Average Feedback Rating</h2><div class="chartbox"><canvas id="ratingChart"></canvas></div></section>
+  <section class="panel"><h2>Recent Events</h2>
+    <table><thead><tr><th>Event</th><th>Date</th><th>Venue</th></tr></thead><tbody>
+    {% for r in recent_events %}<tr><td>{{r.event_name}}</td><td>{{r.event_date}}</td><td>{{r.venue or '—'}}</td></tr>{% endfor %}
+    </tbody></table>
+  </section>
+</div>
+<section class="panel"><h2>Recent Registrations</h2>
+<table><thead><tr><th>Student</th><th>Event</th><th>Date</th><th>Status</th></tr></thead><tbody>
+{% for r in recent_registrations %}<tr><td>{{r.student_name}}</td><td>{{r.event_name}}</td><td>{{r.registration_date}}</td><td><span class="badge">{{r.registration_status}}</span></td></tr>{% endfor %}
+</tbody></table></section>
+{% endblock %}
+{% block scripts %}
+<script>
+const reg={{ reg_chart|tojson }};
+const att={{ attendance_chart|tojson }};
+const rat={{ rating_chart|tojson }};
+new Chart(document.getElementById('regChart'),{type:'bar',data:{labels:reg.map(x=>x.event_name),datasets:[{label:'Registrations',data:reg.map(x=>x.total)}]},options:{responsive:true,maintainAspectRatio:false}});
+new Chart(document.getElementById('attendanceChart'),{type:'doughnut',data:{labels:att.map(x=>x.attendance_status),datasets:[{data:att.map(x=>x.total)}]},options:{responsive:true,maintainAspectRatio:false}});
+new Chart(document.getElementById('ratingChart'),{type:'bar',data:{labels:rat.map(x=>x.event_name),datasets:[{label:'Average rating',data:rat.map(x=>Number(x.average_rating))}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{min:0,max:5}}}});
+</script>
+{% endblock %}

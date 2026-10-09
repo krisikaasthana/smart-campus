@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Events | Smart Campus{% endblock %}
+{% block content %}
+<div class="top"><div><h1>Events</h1><div class="subtitle">Create and manage campus events</div></div></div>
+<section class="panel formpanel"><h2>Add Event</h2>
+<form method="post" action="/events/add" class="formgrid">
+<label>Event Name<input name="event_name" required></label><label>Event Type<input name="event_type" placeholder="Workshop / Seminar / Hackathon" required></label>
+<label>Date<input type="date" name="event_date" required></label><label>Venue<input name="venue"></label>
+<label>Max Participants<input type="number" name="max_participants" min="0" value="0"></label>
+<label>Organizer<select name="organizer_id" required>{% for o in organizers %}<option value="{{o.organizer_id}}">{{o.organizer_name}}</option>{% endfor %}</select></label>
+<div><button class="btn btn-primary">Add Event</button></div>
+</form></section>
+<section class="panel"><h2>Event Records</h2><table><thead><tr><th>ID</th><th>Event</th><th>Type</th><th>Date</th><th>Venue</th><th>Organizer</th><th>Action</th></tr></thead><tbody>
+{% for r in rows %}<tr><td>{{r.event_id}}</td><td>{{r.event_name}}</td><td><span class="badge">{{r.event_type}}</span></td><td>{{r.event_date}}</td><td>{{r.venue or '—'}}</td><td>{{r.organizer_name}}</td><td><form method="post" action="/events/delete/{{r.event_id}}" onsubmit="return confirm('Delete this event?');"><button class="btn btn-danger btn-small">Delete</button></form></td></tr>{% endfor %}
+</tbody></table></section>
+{% endblock %}

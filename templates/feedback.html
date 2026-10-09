@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Feedback | Smart Campus{% endblock %}
+{% block content %}
+<div class="top"><div><h1>Feedback</h1><div class="subtitle">Participant ratings and comments</div></div></div>
+<section class="panel"><h2>Feedback Records</h2><table><thead><tr><th>ID</th><th>Student</th><th>Event</th><th>Rating</th><th>Comments</th></tr></thead><tbody>
+{% for r in rows %}<tr><td>{{r.feedback_id}}</td><td>{{r.student_name}}</td><td>{{r.event_name}}</td><td><span class="badge">{{r.rating}} / 5</span></td><td>{{r.comments or '—'}}</td></tr>{% endfor %}
+</tbody></table></section>
+{% endblock %}
